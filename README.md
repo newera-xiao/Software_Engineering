@@ -10,14 +10,17 @@ Creators: Yixiao Zhou, Kairong Han, Tao Pan, Haoming Yu.
 
 # doc
 
-飞书：https://w1bcgpg61v7.feishu.cn/docx/EasvdyapZoRKfJxcjMzcRCIbnFg
+[飞书](https://w1bcgpg61v7.feishu.cn/docx/EasvdyapZoRKfJxcjMzcRCIbnFg)
 
 # study
 
-git&github
+[git&github](https://www.bilibili.com/video/BV1KD4y1S7FL/?spm_id_from=333.788.recommend_more_video.-1&vd_source=601f08ec04999151a4b161c6634f56ff)
 
-https://www.bilibili.com/video/BV1KD4y1S7FL/?spm_id_from=333.788.recommend_more_video.-1&vd_source=601f08ec04999151a4b161c6634f56ff
+[tutorial](https://pku-minic.github.io/online-doc/#/preface/prerequisites?id=%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8-linux)
 
-tutorial
+[SQLite简介|菜鸟教程](https://www.runoob.com/sqlite/sqlite-intro.html)
 
-https://pku-minic.github.io/online-doc/#/preface/prerequisites?id=%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8-linux
+[SQLite官方文档|英文](https://dormousehole.readthedocs.io/en/latest/)
+
+[欢迎来到Flask的世界——Flask中文文档](https://dormousehole.readthedocs.io/en/latest/)
+
