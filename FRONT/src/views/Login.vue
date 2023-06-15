@@ -107,7 +107,11 @@ export default {
                         console.log('res: ', res, typeof res)
                         this.loading = false
                         window.localStorage.setItem('userInfo', JSON.stringify(res))
-                        location.replace('/home')
+                        if(res.status == "success"){
+                            location.replace('/home')
+                        }else{
+                            this.$message.error('登录失败')
+                        }
                     }).catch(() => {
                         this.loading = false
                         this.$message.error('登录失败')
