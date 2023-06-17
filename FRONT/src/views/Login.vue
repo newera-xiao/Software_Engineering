@@ -83,8 +83,12 @@ export default {
                     register(user).then((res) => {
                         console.log('res: ', res, typeof res)
                         this.loading = false
-                        this.$message.success('注册成功')
-                        this.isRegister = false
+                        if(res.status == "success"){
+                            this.$message.success('注册成功')
+                            this.isRegister = false
+                        } else {
+                            this.$message.error(`注册失败：${res.data.message}`)
+                        }
                     }).catch(() => {
                         this.loading = false
                         this.$message.error('注册失败')
@@ -110,11 +114,11 @@ export default {
                         if(res.status == "success"){
                             location.replace('/home')
                         }else{
-                            this.$message.error('登录失败')
+                            this.$message.error(`登录失败：${res.data.accessToken}`)
                         }
                     }).catch(() => {
                         this.loading = false
-                        this.$message.error('登录失败')
+                        this.$message.error(`登录失败：${res.data.accessToken}`)
                     })
                 } else {
                     console.log('error submit!!')

@@ -1,11 +1,15 @@
-import flask
+import os
 import json
-from flask import Flask
-from flask import Response
+import db
+from flask import Flask, Response, request, session
+# from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
-
-@app.route('/')
+app.config.from_mapping(
+        SECRET_KEY='dev',
+        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+    )
+db.init_app(app)
 
 #--------------------------------------------------------------
 #                          1.登录模块                          |
@@ -15,16 +19,46 @@ def login() -> Response | str:
     '''
     用户登录接口
     '''
-    user_info = flask.request.get_json()
-    print(user_info)
-    res = {
-        'status': 'success',
-        'data': {
-            'userId': "NEED CONNECTION WITH DB",
-            'username': "NEED CONNECTION WITH DB",
-            'accessToken': "NEED CONNECTION WITH DB"
+    error = None
+    status = 'fali'
+    username = request.get_json()['username']
+    password = request.get_json()['password']
+    database = db.get_db()
+    user = database.execute(
+        'SELECT * FROM user WHERE username = ?', (username,)
+    ).fetchone()
+
+    if user is None:
+        error = '用户' + str(username) + '未注册'
+    # elif not check_password_hash(user['password'], password):
+    #     error = '密码错误'
+    elif user['password'] != password:
+        error = '密码错误'
+
+    if error is None:
+        session.clear()
+        session['userId'] = user['id']
+        status = 'success'
+    
+    if status == 'success':
+        res = {
+            'status': status,
+            'data': {
+                'userId': user['id'],
+                'username': user['username'],
+                'accessToken': ''
+            }
         }
-    }
+    elif status == 'fali':
+        res = {
+            'status': status,
+            'data': {
+                'userId': '',
+                'username': '',
+                'accessToken': error
+            }
+        }
+
     return json.dumps(res)
 
 @app.route('/api/auth/register', methods=["POST"])
@@ -32,14 +66,47 @@ def register() -> Response | str:
     '''
     用户注册接口
     '''
-    user_info = flask.request.get_json()
-    print(user_info)
-    res = {
-        'status': 'success',
-        'data': {
-            "message": "Registration successful"
+    error = None
+    status = 'fali'
+    # print(request.get_json())
+    username = request.get_json()['username']
+    password = request.get_json()['password']
+    database = db.get_db()
+
+    if not username:
+        error = '用户名不能为空'
+    elif not password:
+        error = '密码不能为空'
+
+    if error is None:
+        try:
+            # database.execute(
+            #     "INSERT INTO user (username, password) VALUES (?, ?)",
+            #     (username, generate_password_hash(password))
+            # )
+            database.execute(
+                "INSERT INTO user (username, password) VALUES (?, ?)",
+                (username, password)
+            )
+            database.commit()
+            status = 'success'
+        except database.IntegrityError:
+            error = '用户名已被注册'
+    
+    if status == 'success':
+        res = {
+            'status': status,
+            'data': {
+                "message": 'Registration successful'
+            }
         }
-    }
+    elif status == 'fali':
+        res = {
+            'status': status,
+            'data': {
+                "message": error
+            }
+        }
     return json.dumps(res)
 
 @app.route('/api/auth/logout', methods=["POST"])
@@ -47,12 +114,10 @@ def logout() -> Response | str:
     '''
     用户注销接口
     '''
-    # user_info = flask.request.get_json()
-    # print(user_info)
     res = {
         'status': 'success',
         'data': {
-            "message": "Logout successful"
+            "message": "已退出登录"
         }
     }
     return json.dumps(res)
@@ -62,14 +127,59 @@ def password() -> Response | str:
     '''
     修改用户密码接口
     '''
-    user_info = flask.request.get_json()
-    print(user_info)
-    res = {
-        'status': 'success', # success or error
-        'data': {
-            "message": "Password updated successfully"
+    error = None
+    status = 'error'
+    old_password = request.get_json()['old_password']
+    new_password = request.get_json()['new_password']
+    database = db.get_db()
+
+    userId = session['userId']
+    user = database.execute(
+        'SELECT * FROM user WHERE id = ?', (userId,)
+    ).fetchone()
+
+    if not old_password:
+        error = '请输入旧密码'
+    elif not new_password:
+        error = '请输入新密码'
+    # elif not check_password_hash(user['password'], old_password):
+    #     error = '旧密码错误'
+    elif user['password'] != old_password:
+        error = '旧密码错误'
+    elif old_password == new_password:
+        error = '新密码不能与旧密码相同'
+
+    if error is None:
+        # database.execute(
+        #     'UPDATE user SET password = ? WHERE id = ?',
+        #     (generate_password_hash(new_password), userId)
+        # )
+        database.execute(
+            'UPDATE user SET password = ? WHERE id = ?',
+            (new_password, userId)
+        )
+        database.commit()
+        status = 'success'
+
+    user = database.execute('SELECT * FROM user').fetchall()
+    for row in user:
+        print(f"ID: {row['id']}, Username: {row['username']}, Password: {row['password']}")
+
+    if status == 'success':
+        res = {
+            'status': status,
+            'data': {
+                "message": "修改密码成功"
+            }
         }
-    }
+    elif status == 'error':
+        res = {
+            'status': status,
+            'data': {
+                "message": error
+            }
+        }
+
     return json.dumps(res)
 
 #--------------------------------------------------------------
@@ -80,7 +190,7 @@ def create_plans() -> Response | str:
     '''
     手动创建康复计划接口
     '''
-    user_info = flask.request.get_json()
+    user_info = request.get_json()
     print(user_info)
     res = {
         "status": "success", # success or error
@@ -96,7 +206,7 @@ def update_plans() -> Response | str:
     '''
     更新康复计划接口
     '''
-    user_info = flask.request.get_json()
+    user_info = request.get_json()
     print(user_info)
     res = {
         "status": "success", # success or error
@@ -122,7 +232,7 @@ def get_plans() -> Response | str:
     - sets (integer): 组数
     - repetitions (integer): 每组次数
     '''
-    # user_info = flask.request.get_json()
+    # user_info = request.get_json()
     # print(user_info)
     res = {
         "status": "success", # success or error
@@ -153,7 +263,7 @@ def delete_plans() -> Response | str:
     '''
     删除康复计划接口
     '''
-    # user_info = flask.request.get_json()
+    # user_info = request.get_json()
     # print(user_info)
     res = {
         "status": "success", # success or error
@@ -168,7 +278,7 @@ def generate_plans() -> Response | str:
     '''
     自动生成康复训练计划接口
     '''
-    user_info = flask.request.get_json()
+    user_info = request.get_json()
     print(user_info)
     res = {
         "status": "success", # success or error
@@ -202,7 +312,7 @@ def get_categories() -> Response | str:
     '''
     获取康复知识分类列表接口
     '''
-    # user_info = flask.request.get_json()
+    # user_info = request.get_json()
     # print(user_info)
     res = {
         "status": "success", # success or error
@@ -224,8 +334,9 @@ def get_knowledge() -> Response | str:
     '''
     获取康复知识列表接口
     '''
-    # user_info = flask.request.get_json()
-    # print(user_info)
+    user_info = request.args.get('category','')
+    # user_info = request.get_json()
+    print(user_info)
     res = {
         "status": "success",
         "data": [
@@ -259,7 +370,7 @@ def get_progress_data(userId) -> Response | str:
     '''
     获取康复进度数据接口
     '''
-    # user_info = flask.request.get_json()
+    # user_info = request.get_json()
     # print(user_info)
     res = {
         "status": "success", 
@@ -278,7 +389,7 @@ def get_progress_report(userId) -> Response | str:
     '''
     获取进度报告接口
     '''
-    # user_info = flask.request.get_json()
+    # user_info = request.get_json()
     # print(user_info)
     res = {
         "status": "success", 
@@ -295,7 +406,7 @@ def update_progress() -> Response | str:
     '''
     更新康复进度接口
     '''
-    user_info = flask.request.get_json()
+    user_info = request.get_json()
     print(user_info)
     res = {
         "status": "success", 
@@ -308,7 +419,7 @@ def get_progress_detail(userId) -> Response | str:
     '''
     获取详细进度数据
     '''
-    # user_info = flask.request.get_json()
+    # user_info = request.get_json()
     # print(user_info)
     res = {
         "status": "success", 
@@ -328,7 +439,7 @@ def submit_medication_feedback() -> Response | str:
     '''
     提交药物反馈接口
     '''
-    user_info = flask.request.get_json()
+    user_info = request.get_json()
     print(user_info)
     res = {
         "status": "success", # success or error
@@ -341,7 +452,7 @@ def get_medication_feedback(medicationId) -> Response | str:
     '''
     获取药物反馈列表接口
     '''
-    # user_info = flask.request.get_json()
+    # user_info = request.get_json()
     # print(user_info)
     res =  {
         "status": "success",
@@ -372,7 +483,7 @@ def submit_inquiry_feedback() -> Response | str:
     '''
     提交问诊反馈接口
     '''
-    user_info = flask.request.get_json()
+    user_info = request.get_json()
     print(user_info)
     res =  {
         "status": "success",
@@ -385,7 +496,7 @@ def get_inquiry_feedback(doctorId) -> Response | str:
     '''
     获取问诊反馈列表接口
     '''
-    # user_info = flask.request.get_json()
+    # user_info = request.get_json()
     # print(user_info)
     res =   {
         "status": "success",

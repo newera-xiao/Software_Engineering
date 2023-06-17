@@ -105,6 +105,8 @@ export default {
                         editPest(params).then(res => {
                             if (res.status == 'success') {
                                 this.$message.success('修改成功')
+                            } else {
+                                this.$message.error(`修改失败：${res.data.message}`)
                             }
                         })
                     } else {
