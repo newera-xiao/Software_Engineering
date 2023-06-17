@@ -24,3 +24,8 @@ Creators: Yixiao Zhou, Kairong Han, Tao Pan, Haoming Yu.
 
 [欢迎来到Flask的世界——Flask中文文档](https://dormousehole.readthedocs.io/en/latest/)
 
+# 后端编写
+
+把代码`pull`下来后，先在终端中`cd`到`./BACK`文件夹下尝试运行`flask run`，如果成功运行，说明`flask`环境正确，此时按`ctrl+c`终止程序，在终端运行`flask init-db`**（注意：此处为横杠，不是下划线，不要写成`init_db`）**，这个命令会初始化数据库，所以每当你修改`schema.sql`文件后，都应该运行一次这个命令。
+
+如果运行`flask run`失败，在`powershell`中运行这个命令：`$env:FLASK_APP=app.py`，如果此时运行`flask run`还是失败，请求助小组成员。（注意全程保持在`./BACK`文件夹下）
