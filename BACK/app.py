@@ -7,7 +7,7 @@ from flask import Flask, Response, request, session
 app = Flask(__name__)
 app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        DATABASE=os.path.join(app.instance_path, 'database.sqlite'),
     )
 db.init_app(app)
 
