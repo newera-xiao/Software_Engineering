@@ -67,7 +67,7 @@ INSERT INTO rehabilitation_knowledge (knowledgeId, categoryId, title, content, i
     ('knowledge25', 'category5', '骨折康复的心理支持', '骨折康复期间的心理支持对于患者的康复非常重要。本文提供了一些心理支持的方法和建议。', NULL, NULL, '心理学杂志Y', '2023-06-25 12:20:00');
 
 CREATE TABLE medicine_feedback (
-    feecbackId INTEGER PRIMARY KEY AUTOINCREMENT,
+    feedbackId INTEGER PRIMARY KEY AUTOINCREMENT,
     patient TEXT,
     medicine TEXT,
     feedbackContent TEXT,
@@ -76,7 +76,7 @@ CREATE TABLE medicine_feedback (
 );
 
 CREATE TABLE diagnose_feedback (
-    feecbackId INTEGER PRIMARY KEY AUTOINCREMENT,
+    feedbackId INTEGER PRIMARY KEY AUTOINCREMENT,
     patient TEXT,
     doctor TEXT,
     feedbackContent TEXT,

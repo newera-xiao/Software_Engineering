@@ -8,7 +8,7 @@
             </el-table-column>
             <el-table-column prop="feedbackId" label="反馈ID">
             </el-table-column>
-            <el-table-column prop="patientId" label="病人ID">
+            <el-table-column prop="patientId" label="用户名">
             </el-table-column>
             <!-- <el-table-column prop="feedbackType" label="反馈类型">
             </el-table-column> -->
@@ -21,11 +21,11 @@
         <el-dialog :title="isEdit ? '编辑' : '新增'" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
 
             <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-                <el-form-item label="患者ID" prop="patientId">
-                    <el-input placeholder="请输入患者ID" v-model="form.patientId"></el-input>
+                <el-form-item label="用户名" prop="patientId">
+                    <el-input placeholder="请输入用户名" v-model="form.patientId"></el-input>
                 </el-form-item>
-                <el-form-item label="药物ID" prop="medicationId">
-                    <el-input placeholder="请输入药物ID" v-model="form.medicationId"></el-input>
+                <el-form-item label="药名" prop="medicationId">
+                    <el-input placeholder="请输入药名" v-model="form.medicationId"></el-input>
                 </el-form-item>
                 <!-- <el-form-item label="反馈类型" prop="feedbackType">
                     <el-input placeholder="选择反馈类型" v-model="form.feedbackType"></el-input>
@@ -88,10 +88,10 @@ export default {
             },
             rules: {
                 patientId: [
-                    { required: true, message: '请输入患者ID', trigger: 'blur' }
+                    { required: true, message: '请输入用户名', trigger: 'blur' }
                 ],
                 medicationId: [
-                    { required: true, message: '请输入药物ID', trigger: 'blur' }
+                    { required: true, message: '请输入药名', trigger: 'blur' }
                 ],
                 feedbackContent: [
                     { required: true, message: '请输入反馈内容', trigger: 'blur' }

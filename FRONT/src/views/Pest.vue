@@ -8,7 +8,7 @@
             </el-table-column>
             <el-table-column prop="feedbackId" label="反馈ID">
             </el-table-column>
-            <el-table-column prop="patientId" label="病人ID">
+            <el-table-column prop="patientId" label="用户名">
             </el-table-column>
             <el-table-column prop="feedbackContent" label="反馈内容">
             </el-table-column>
@@ -19,11 +19,11 @@
         <el-dialog :title="isEdit ? '编辑' : '新增'" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
 
             <el-form ref="editForm" :model="editForm" :rules="rules" label-width="80px">
-                <el-form-item label="病人ID" prop="patientId">
-                    <el-input placeholder="请输入病人ID" v-model="editForm.patientId"></el-input>
+                <el-form-item label="用户名" prop="patientId">
+                    <el-input placeholder="请输入用户名" v-model="editForm.patientId"></el-input>
                 </el-form-item>
-                <el-form-item label="医生ID" prop="doctorId">
-                    <el-input placeholder="请输入医生ID" v-model="editForm.doctorId"></el-input>
+                <el-form-item label="医生姓名" prop="doctorId">
+                    <el-input placeholder="请输入医生姓名" v-model="editForm.doctorId"></el-input>
                 </el-form-item>
                 <el-form-item label="反馈内容" prop="feedbackContent">
                     <el-input v-model="editForm.feedbackContent"></el-input>
