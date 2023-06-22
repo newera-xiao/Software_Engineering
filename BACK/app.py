@@ -20,7 +20,7 @@ def login() -> Response | str:
     用户登录接口
     '''
     error = None
-    status = 'fali'
+    status = 'fail'
     username = request.get_json()['username']
     password = request.get_json()['password']
     database = db.get_db()
@@ -49,7 +49,7 @@ def login() -> Response | str:
                 'accessToken': ''
             }
         }
-    elif status == 'fali':
+    elif status == 'fail':
         res = {
             'status': status,
             'data': {
@@ -67,7 +67,7 @@ def register() -> Response | str:
     用户注册接口
     '''
     error = None
-    status = 'fali'
+    status = 'fail'
     # print(request.get_json())
     username = request.get_json()['username']
     password = request.get_json()['password']
@@ -100,7 +100,7 @@ def register() -> Response | str:
                 "message": 'Registration successful'
             }
         }
-    elif status == 'fali':
+    elif status == 'fail':
         res = {
             'status': status,
             'data': {
