@@ -236,28 +236,269 @@ def get_plans() -> Response | str:
     '''
     # user_info = request.get_json()
     # print(user_info)
+    # English version
+    # res = {
+    #     "status": "success",
+    #     "data": {
+    #         "planId": "plan123",
+    #         "planName": "Rehabilitation Plan",
+    #         "description": "This is a comprehensive rehabilitation plan for your recovery.",
+    #         "exercises": [
+    #             {
+    #                 "name": "Quadriceps Strengthening",
+    #                 "description": "Perform quadriceps strengthening exercises to improve muscle strength and stability in the front of your thigh.",
+    #                 "sets": 3,
+    #                 "repetitions": 10
+    #             },
+    #             {
+    #                 "name": "Shoulder Range of Motion",
+    #                 "description": "Perform shoulder range of motion exercises to improve flexibility and mobility in your shoulder joint.",
+    #                 "sets": 2,
+    #                 "repetitions": 12
+    #             },
+    #             {
+    #                 "name": "Core Stability Training",
+    #                 "description": "Engage in core stability exercises to strengthen your abdominal and back muscles, improving stability and reducing the risk of injury.",
+    #                 "sets": 3,
+    #                 "repetitions": 15
+    #             },
+    #             {
+    #                 "name": "Balance and Proprioception",
+    #                 "description": "Practice balance and proprioception exercises to enhance your body's sense of position and control, reducing the risk of falls and improving coordination.",
+    #                 "sets": 2,
+    #                 "repetitions": 10
+    #             },
+    #             {
+    #                 "name": "Cardiovascular Endurance",
+    #                 "description": "Engage in cardiovascular exercises, such as brisk walking or cycling, to improve your overall endurance and cardiovascular health.",
+    #                 "sets": 1,
+    #                 "repetitions": "20 minutes"
+    #             },
+    #             {
+    #                 "name": "Ankle Strengthening",
+    #                 "description": "Perform ankle strengthening exercises to improve stability and strength in your ankle joint.",
+    #                 "sets": 3,
+    #                 "repetitions": 12
+    #             },
+    #             {
+    #                 "name": "Hip Flexor Stretch",
+    #                 "description": "Stretch your hip flexor muscles to improve flexibility and reduce tightness in your hip area.",
+    #                 "sets": 2,
+    #                 "repetitions": 10
+    #             },
+    #             {
+    #                 "name": "Posture Correction",
+    #                 "description": "Practice exercises and techniques to improve your posture and alignment, reducing strain on your muscles and joints.",
+    #                 "sets": 2,
+    #                 "repetitions": 10
+    #             },
+    #             {
+    #                 "name": "Spinal Mobility Exercises",
+    #                 "description": "Perform spinal mobility exercises to improve flexibility and range of motion in your spine.",
+    #                 "sets": 3,
+    #                 "repetitions": 12
+    #             },
+    #             {
+    #                 "name": "Wrist Strengthening",
+    #                 "description": "Engage in wrist strengthening exercises to improve grip strength and stability in your wrist joint.",
+    #                 "sets": 3,
+    #                 "repetitions": 10
+    #             },
+    #             {
+    #                 "name": "Neck Stretching",
+    #                 "description": "Stretch your neck muscles to relieve tension, improve flexibility, and reduce neck pain.",
+    #                 "sets": 2,
+    #                 "repetitions": 10
+    #             },
+    #             {
+    #                 "name": "Hamstring Strengthening",
+    #                 "description": "Perform hamstring strengthening exercises to improve strength and flexibility in the back of your thigh.",
+    #                 "sets": 3,
+    #                 "repetitions": 12
+    #             },
+    #             {
+    #                 "name": "Rotator Cuff Exercises",
+    #                 "description": "Engage in rotator cuff exercises to strengthen the muscles and tendons around your shoulder joint, improving stability and preventing injury.",
+    #                 "sets": 3,
+    #                 "repetitions": 12
+    #             },
+    #             {
+    #                 "name": "Glute Activation",
+    #                 "description": "Activate and strengthen your gluteal muscles to improve hip stability and reduce the risk of lower body injuries.",
+    #                 "sets": 3,
+    #                 "repetitions": 10
+    #             },
+    #             {
+    #                 "name": "Lower Back Stretch",
+    #                 "description": "Stretch your lower back muscles to relieve tension, improve flexibility, and alleviate lower back pain.",
+    #                 "sets": 2,
+    #                 "repetitions": 10
+    #             },
+    #             {
+    #                 "name": "Calf Strengthening",
+    #                 "description": "Perform calf strengthening exercises to improve strength and stability in your calf muscles.",
+    #                 "sets": 3,
+    #                 "repetitions": 12
+    #             },
+    #             {
+    #                 "name": "Pectoral Stretch",
+    #                 "description": "Stretch your pectoral muscles to improve flexibility and reduce tightness in your chest area.",
+    #                 "sets": 2,
+    #                 "repetitions": 10
+    #             },
+    #             {
+    #                 "name": "Lateral Band Walk",
+    #                 "description": "Perform lateral band walks to activate and strengthen your hip abductor muscles, improving hip stability and reducing the risk of knee injuries.",
+    #                 "sets": 2,
+    #                 "repetitions": 10
+    #             },
+    #             {
+    #                 "name": "Tricep Dips",
+    #                 "description": "Engage in tricep dips to strengthen and tone your tricep muscles, improving arm strength and stability.",
+    #                 "sets": 3,
+    #                 "repetitions": 12
+    #             },
+    #             {
+    #                 "name": "Ankle Mobility Exercises",
+    #                 "description": "Perform ankle mobility exercises to improve flexibility and range of motion in your ankle joint.",
+    #                 "sets": 2,
+    #                 "repetitions": 10
+    #             }
+    #         ]
+    #     }
+    # }
+
     res = {
-        "status": "success", # success or error
+        "status": "success",
         "data": {
             "planId": "plan123",
-            "planName": "Example Plan",
-            "description": "This is an example rehabilitation plan.",
+            "planName": "康复计划",
+            "description": "这是一个综合性的康复计划，旨在帮助您进行康复训练。",
             "exercises": [
                 {
-                    "name": "Exercise 1",
-                    "description": "Example exercise 1",
+                    "name": "股四头肌强化",
+                    "description": "进行股四头肌强化运动，以改善大腿前侧肌肉的力量和稳定性。",
                     "sets": 3,
                     "repetitions": 10
                 },
                 {
-                    "name": "Exercise 2",
-                    "description": "Example exercise 2",
+                    "name": "肩关节活动",
+                    "description": "进行肩关节活动运动，以改善肩关节的灵活性和活动范围。",
                     "sets": 2,
                     "repetitions": 12
+                },
+                {
+                    "name": "核心稳定性训练",
+                    "description": "进行核心稳定性训练，以加强腹部和背部肌肉，提高稳定性，减少受伤风险。",
+                    "sets": 3,
+                    "repetitions": 15
+                },
+                {
+                    "name": "平衡和本体感知",
+                    "description": "进行平衡和本体感知训练，增强身体的位置感知和控制能力，减少摔倒风险，提高协调性。",
+                    "sets": 2,
+                    "repetitions": 10
+                },
+                {
+                    "name": "心血管耐力",
+                    "description": "进行心血管运动，如快走或骑车，以提高整体耐力和心血管健康。",
+                    "sets": 1,
+                    "repetitions": "20分钟"
+                },
+                {
+                    "name": "踝关节强化",
+                    "description": "进行踝关节强化运动，以增强踝关节的稳定性和力量。",
+                    "sets": 3,
+                    "repetitions": 12
+                },
+                {
+                    "name": "髋屈肌伸展",
+                    "description": "进行髋屈肌伸展运动，以改善髋部区域的灵活性，减少紧张感。",
+                    "sets": 2,
+                    "repetitions": 10
+                },
+                {
+                    "name": "姿势矫正",
+                    "description": "练习姿势矫正的运动和技巧，改善姿势和对齐，减少肌肉和关节的负担。",
+                    "sets": 2,
+                    "repetitions": 10
+                },
+                {
+                    "name": "脊柱活动性训练",
+                    "description": "进行脊柱活动性训练，以提高脊柱的灵活性和活动范围。",
+                    "sets": 3,
+                    "repetitions": 12
+                },
+                {
+                    "name": "腕部强化",
+                    "description": "进行腕部强化运动，以提高握力和腕关节的稳定性。",
+                    "sets": 3,
+                    "repetitions": 10
+                },
+                {
+                    "name": "颈部伸展",
+                    "description": "进行颈部伸展运动，缓解紧张感，改善颈部的灵活性，减少颈部疼痛。",
+                    "sets": 2,
+                    "repetitions": 10
+                },
+                {
+                    "name": "腿后肌群强化",
+                    "description": "进行腿后肌群强化运动，以增强大腿后侧的力量和灵活性。",
+                    "sets": 3,
+                    "repetitions": 12
+                },
+                {
+                    "name": "旋转袖肌训练",
+                    "description": "进行旋转袖肌训练，以增强肩关节周围的肌肉和肌腱，提高稳定性，预防受伤。",
+                    "sets": 3,
+                    "repetitions": 12
+                },
+                {
+                    "name": "臀部激活",
+                    "description": "激活和强化臀部肌肉，以改善髋部稳定性，降低下肢受伤风险。",
+                    "sets": 3,
+                    "repetitions": 10
+                },
+                {
+                    "name": "腰部伸展",
+                    "description": "进行腰部伸展运动，缓解紧张感，改善腰部的灵活性，缓解腰背疼痛。",
+                    "sets": 2,
+                    "repetitions": 10
+                },
+                {
+                    "name": "小腿肌群强化",
+                    "description": "进行小腿肌群强化运动，以增强小腿肌肉的稳定性和力量。",
+                    "sets": 3,
+                    "repetitions": 12
+                },
+                {
+                    "name": "胸肌伸展",
+                    "description": "进行胸肌伸展运动，以改善胸部区域的灵活性，减少紧张感。",
+                    "sets": 2,
+                    "repetitions": 10
+                },
+                {
+                    "name": "侧面橡皮筋行走",
+                    "description": "进行侧面橡皮筋行走，激活和强化髋部外展肌群，提高髋部稳定性，减少膝关节受伤风险。",
+                    "sets": 2,
+                    "repetitions": 10
+                },
+                {
+                    "name": "三头肌屈臂伸展",
+                    "description": "进行三头肌屈臂伸展，增强和塑造三头肌肌肉，提高手臂力量和稳定性。",
+                    "sets": 3,
+                    "repetitions": 12
+                },
+                {
+                    "name": "踝关节活动性训练",
+                    "description": "进行踝关节活动性训练，以提高踝关节的灵活性和活动范围。",
+                    "sets": 2,
+                    "repetitions": 10
                 }
             ]
         }
     }
+
     return json.dumps(res)
 
 @app.route('/api/rehabilitation/plans', methods=["DELETE"])
