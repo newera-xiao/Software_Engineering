@@ -5,9 +5,9 @@ DROP TABLE IF EXISTS medicine_feedback;
 DROP TABLE IF EXISTS diagnose_feedback;
 
 CREATE TABLE user (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  username TEXT UNIQUE NOT NULL,
-  password TEXT NOT NULL
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL
 );
 
 CREATE TABLE rehabilitation_categories (
