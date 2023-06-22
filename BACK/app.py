@@ -328,6 +328,13 @@ def get_categories() -> Response | str:
     """
     # user_info = request.get_json()
     # print(user_info)
+    database = db.get_db()
+    res_data = []
+    res_status = "fail"
+    category_list = database.execute(
+        'SELECT * FROM rehabilitation_categories'
+    ).fetchall()
+    print(category_list) # test the format of the result from fetchall function
     res = {
         "status": "success",  # success or error
         "data": [
