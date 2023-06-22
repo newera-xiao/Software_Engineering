@@ -68,18 +68,18 @@ INSERT INTO rehabilitation_knowledge (knowledgeId, categoryId, title, content, i
 
 CREATE TABLE medicine_feedback (
     feecbackId INTEGER PRIMARY KEY AUTOINCREMENT,
-    patientId INTEGER,
-    medicineID INTEGER,
+    patient TEXT,
+    medicine TEXT,
     feedbackContent TEXT,
     feedbackDate TEXT,
-    FOREIGN KEY(patientId) REFERENCES user(id)
+    FOREIGN KEY(patient) REFERENCES user(username)
 );
 
 CREATE TABLE diagnose_feedback (
     feecbackId INTEGER PRIMARY KEY AUTOINCREMENT,
-    patientId INTEGER,
-    doctor INTEGER,
+    patient TEXT,
+    doctor TEXT,
     feedbackContent TEXT,
     feedbackDate TEXT,
-    FOREIGN KEY(patientId) REFERENCES user(id)
+    FOREIGN KEY(patient) REFERENCES user(username)
 );

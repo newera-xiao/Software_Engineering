@@ -3,6 +3,7 @@ import json
 import db
 from flask import Flask, Response, request, session
 # from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import datetime
 
 app = Flask(__name__)
 app.config.from_mapping(
@@ -86,6 +87,7 @@ def login() -> Response | str:
     if error is None:
         session.clear()
         session['userId'] = user['id']
+        session['userName'] = user['username']
         status = 'success'
     
     if status == 'success':
@@ -542,7 +544,27 @@ def submit_medication_feedback() -> Response | str:
     提交药物反馈接口
     '''
     user_info = request.get_json()
-    print(user_info)
+
+    patient = user_info['patientId']
+    medication = user_info['medicationId']
+    feedbackContent = user_info['feedbackContent']
+
+    print(patient, medication, feedbackContent)
+
+    # 获取当前时间
+    current_time = datetime.now()
+
+    # 将时间格式化为字符串
+    time_string = current_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    # 存储到数据库中
+    database = db.get_db()
+    database.execute(
+        "INSERT INTO medicine_feedback (patient, medicine, feedbackContent, feedbackDate) VALUES (?, ?, ?, ?)",
+        (patient, medication, feedbackContent, time_string)
+    )
+    database.commit()
+
     res = {
         "status": "success", # success or error
         "message": "药物反馈提交成功"
@@ -554,27 +576,41 @@ def get_medication_feedback(medicationId) -> Response | str:
     '''
     获取药物反馈列表接口
     '''
-    # user_info = request.get_json()
-    # print(user_info)
-    res =  {
-        "status": "success",
-        "data": [
-            {
-                "feedbackId": "feedback123",
-                "patientId": "patient123",
-                "feedbackType": "text",
-                "feedbackContent": "药物效果良好，疼痛减轻",
-                "date": "2023-06-01"
-            },
-            {
-                "feedbackId": "feedback456",
-                "patientId": "patient456",
-                "feedbackType": "voice",
-                "feedbackContent": "语音反馈的文本转录内容",
-                "date": "2023-06-02"
-            }
-        ]
-    }
+    database = db.get_db()
+
+    user_feedback = database.execute(
+        'SELECT * FROM medicine_feedback WHERE patient = ?', (session['userName'],)
+    ).fetchall()
+
+    if len(user_feedback) != 0:
+        data = []
+        for u in user_feedback:
+            u_data = {
+                    "feedbackId": u['feecbackId'],
+                    "patientId": u['patient'],
+                    "feedbackType": "text",
+                    "feedbackContent": u['feedbackContent'],
+                    "date": u['feedbackDate']
+                    }
+            data.append(u_data)
+
+        res = {
+            "status": "success",
+            "data": data
+        }
+    else:
+        res = {
+            "status": "success",
+            "data": [
+                {
+                    "feedbackId": "/",
+                    "patientId": "/",
+                    "feedbackType": "/",
+                    "feedbackContent": "/",
+                    "date": "/"
+                }
+            ]
+        }
     return json.dumps(res)
 
 #--------------------------------------------------------------
@@ -587,6 +623,27 @@ def submit_inquiry_feedback() -> Response | str:
     '''
     user_info = request.get_json()
     print(user_info)
+
+    user_info = request.get_json()
+
+    patient = user_info['patientId']
+    doctor = user_info['doctorId']
+    feedbackContent = user_info['feedbackContent']
+
+    # 获取当前时间
+    current_time = datetime.now()
+
+    # 将时间格式化为字符串
+    time_string = current_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    # 存储到数据库中
+    database = db.get_db()
+    database.execute(
+        "INSERT INTO diagnose_feedback (patient, doctor, feedbackContent, feedbackDate) VALUES (?, ?, ?, ?)",
+        (patient, doctor, feedbackContent, time_string)
+    )
+    database.commit()
+
     res =  {
         "status": "success",
         "message": "问诊反馈提交成功"
@@ -598,25 +655,39 @@ def get_inquiry_feedback(doctorId) -> Response | str:
     '''
     获取问诊反馈列表接口
     '''
-    # user_info = request.get_json()
-    # print(user_info)
-    res =   {
-        "status": "success",
-        "data": [
-            {
-                "feedbackId": "feedback123",
-                "patientId": "patient123",
-                "feedbackContent": "非常满意医生的诊断结果，感谢医生的耐心和专业知识",
-                "date": "2023-06-01"
-            },
-            {
-                "feedbackId": "feedback456",
-                "patientId": "patient456",
-                "feedbackContent": "对医生的诊断结果有疑问，请进一步解释",
-                "date": "2023-06-02"
+    database = db.get_db()
+
+    user_feedback = database.execute(
+        'SELECT * FROM diagnose_feedback WHERE patient = ?', (session['userName'],)
+    ).fetchall()
+
+    if len(user_feedback) != 0:
+        data = []
+        for u in user_feedback:
+            u_data = {
+                "feedbackId": u['feecbackId'],
+                "patientId": u['patient'],
+                "feedbackContent": u['feedbackContent'],
+                "date": u['feedbackDate']
             }
-        ]
-    }
+            data.append(u_data)
+
+        res = {
+            "status": "success",
+            "data": data
+        }
+    else:
+        res = {
+            "status": "success",
+            "data": [
+                {
+                    "feedbackId": "/",
+                    "patientId": "/",
+                    "feedbackContent": "/",
+                    "date": "/"
+                }
+            ]
+        }
     return json.dumps(res)
 
 if __name__ == "__main__":
